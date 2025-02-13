@@ -1,0 +1,156 @@
+<gift html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Heart</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .message-container {
+            width: 90%;
+            max-width: 600px;
+            padding: 20px;
+            color: #ff69b4;
+            font-family: 'Pacifico', cursive;
+            font-size: 1.5rem;
+        }
+
+        .typing-text::after {
+            content: '|';
+            display: inline-block;
+            animation: blink 0.7s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .heart-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .heart-outline {
+            width: 80vw;
+            max-width: 400px;
+            height: 80vw;
+            max-height: 400px;
+            position: relative;
+        }
+
+        .emoji-heart {
+            position: absolute;
+            font-size: 16px;
+            animation: float 3s ease-in-out infinite;
+            color: #ff69b4;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .heart-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-family: 'Pacifico', cursive;
+            font-size: 1.5rem;
+            text-align: center;
+            z-index: 2;
+            text-shadow: 2px 2px 4px rgba(255,105,180,0.8);
+            width: 80%;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(15deg); }
+        }
+
+        @media (min-width: 600px) {
+            .message-container {
+                font-size: 2rem;
+            }
+
+            .heart-text {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="heart-container">
+        <div class="heart-outline" id="heartOutline">
+            <div class="heart-text">Happy Valentine's Day~</div>
+        </div>
+    </div>
+
+    <div class="message-container">
+        <div id="typedMessage" class="typing-text"></div>
+    </div>
+
+    <script>
+        const emojis = ['❤️', '💖', '💝', '💘', '💕', '💞', '💓', '💗'];
+        const heartOutline = document.getElementById('heartOutline');
+        const numPoints = 100;
+
+        function createHeartOutline() {
+            heartOutline.innerHTML = '<div class="heart-text">Happy Valentine\'s Day~</div>';
+            
+            const centerX = heartOutline.offsetWidth / 2;
+            const centerY = heartOutline.offsetHeight / 2;
+
+            for(let i = 0; i < numPoints; i++) {
+                const t = (Math.PI * 2 * i) / numPoints;
+                const x = 100 * Math.pow(Math.sin(t), 3);
+                const y = 80 * (Math.cos(t) - 0.5 * Math.cos(2*t) - 0.2 * Math.cos(3*t) - 0.1 * Math.cos(4*t));
+                
+                const emoji = document.createElement('div');
+                emoji.className = 'emoji-heart';
+                emoji.style.left = `${x + centerX}px`;
+                emoji.style.top = `${-y + centerY}px`;
+                emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                emoji.style.animationDelay = `${Math.random() * 2}s`;
+                heartOutline.appendChild(emoji);
+            }
+        }
+
+        createHeartOutline();
+
+        const text = `To my beautiful\nTrishia 💖\n\nThank you for everything you had done for me,\nI love you ❤️,\n and I know althought it's hard,\n but I hope that we  can still be together for longer 🫶🏻 ~`;
+
+        let i = 0;
+        const speed = 80;
+
+        function typeWriter() {
+            if (i < text.length) {
+                document.getElementById("typedMessage").innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, speed);
+            }
+        }
+
+        window.onload = typeWriter;
+    </script>
+</body>
+</html>
